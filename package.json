@@ -1,0 +1,27 @@
+{
+  "name": "bpm",
+  "version": "0.0.1",
+  "description": "Beats per minute application",
+  "main": "init.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/13ruce1337/BPM"
+  },
+  "keywords": [
+    "beats",
+    "music",
+    "audio",
+    "bpm"
+  ],
+  "author": "Trevor Cooper",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/13ruce1337/BPM/issues"
+  },
+  "dependencies": {
+    "hogan.js": "~2.0.0"
+  }
+}

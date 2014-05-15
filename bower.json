@@ -1,0 +1,22 @@
+{
+  "name": "bpm",
+  "version": "0.0.1",
+  "authors": [
+    "13ruce1337 <tagcoop@gmail.com>"
+  ],
+  "description": "Beats per minute application",
+  "license": "MIT",
+  "homepage": "http://trevor.epihedron.com",
+  "private": true,
+  "dependencies":{
+    "jquery":"latest"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "/src/plugins",
+    "test",
+    "tests"
+  ]
+}
