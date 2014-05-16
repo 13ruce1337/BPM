@@ -4,20 +4,36 @@ var hogan = require('hogan.js'),
     parts,
     css,
     jquery,
-    bpm;
+    bpm,
+    type,
+    output;
 
-function getcontents(file) {
-  fs.readFile(file,'utf-8',function(err,data) {
+parts = {};
+
+function getcontents(file,v,cb) {
+  fs.readFile(file,'utf-8',function(err,d) {
     if(err) throw err;
-    return data;
+    type = v;
+    cb(d);
   });
 }
 
-template = getcontents('/../libs/temp.html');
-console.log(template);
+function comp(d) {
+  if(type === 'template') {
+    template = d;
+  } else {
+    parts[type] = d;
+  }
+  if(template && parts.style && parts.bpm && parts.jquery) {
+    var temp = hogan.compile(template);
+    output = temp.render(parts);
+    fs.writeFile(__dirname + '/../../build/bpm.html',output,function(err) {
+      if(err) throw err;
+    });
+  }
+}
 
-parts = {
-  "css":css,
-  "jquery":jquery,
-  "bpm":bpm
-};
+getcontents('src/libs/temp.html','template',comp);
+getcontents('src/libs/bpm.css','style',comp);
+getcontents('src/plugins/jquery/dist/jquery.min.js','jquery',comp);
+getcontents('src/res/bpm.js','bpm',comp);
