@@ -24,7 +24,7 @@ function comp(d) {
   } else {
     parts[type] = d;
   }
-  if(template && parts.style && parts.bpm && parts.jquery) {
+  if(template && parts.style && parts.bpm && parts.jquery && parts.app) {
     var temp = hogan.compile(template);
     output = temp.render(parts);
     fs.writeFile(__dirname + '/../../build/bpm.html',output,function(err) {
@@ -37,3 +37,4 @@ getcontents('src/libs/temp.html','template',comp);
 getcontents('src/libs/bpm.css','style',comp);
 getcontents('src/plugins/jquery/dist/jquery.min.js','jquery',comp);
 getcontents('src/res/bpm.js','bpm',comp);
+getcontents('src/res/app.js','app',comp);
