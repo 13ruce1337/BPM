@@ -12,8 +12,12 @@ module.exports = function(grunt) {
     },
     watch:{
       scripts:{
-        files:['src/*'],
+        files:['src/res/*.js'],
         tasks:['jshint','execute']
+      },
+      libs:{
+        files:['src/libs/*.*'],
+        tasks:['execute']
       }
     }
   });

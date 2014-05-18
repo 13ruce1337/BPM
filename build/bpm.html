@@ -30,6 +30,22 @@ body{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  position:relative;
+}
+.led {
+  width:.25em;
+  height:.25em;
+  position:absolute;
+  border-radius:.25em;
+  right:15px;
+  top:12px;
+  background:red;
+}
+.prev {
+  position:absolute;
+  font-size:.5em;
+  left:2px;
+  bottom:2px;
 }
 .button {
   font-size:1.5em;
@@ -65,22 +81,50 @@ body{
     <!-- bpm js -->
     <script>
       BPM = {
+  bpm:function() {
+    var bpm,sum;
+    sum = 0;
+    for(var i=0;i<BPM.count.length;i++) {
+      if(BPM.count[i] !== null) {
+        sum += BPM.count[i];
+      }
+    }
+    bpm = Math.floor((120/BPM.count.length)*sum,1) || 0;
+    return bpm;
+  },
   timer:undefined,
   init:function() {
-      BPM.tempcount += 1;
-      console.log(BPM.tempcount);
+    BPM.tempcount += 1;
+    if(!BPM.timer) {
+      BPM.counter();
+      BPM.listen();
+    }
+    $('.BPM').text(BPM.bpm());
   },
+  state:undefined,
   counter:function() {
+    function f() {
+      BPM.count.push(BPM.tempcount);
+      BPM.tempcount = 0;
+    }
+    BPM.timer = setInterval(f,500);
   },
   tempcount:0,
   count:[],
-  listen:function(a) {
+  listen:function() {
+    var t;
+    clearTimeout(t);
+    t = setTimeout(f,5000);
+    $('.BPM_led').attr('style','background:green;');
+    BPM.state = 1;
     function f() {
       clearInterval(BPM.timer);
+      $('.BPM_led').attr('style','background:red;');
+      $('.BPM_prev').text(BPM.bpm());
+      BPM.timer = undefined;
+      BPM.state = undefined;
+      BPM.count = [];
     }
-    clearTimeout(t);
-    var t = setTimeout(f,10000);
-    if(a) clearTimeout(t);
   }
 };
 
@@ -103,8 +147,14 @@ body{
   <!-- app -->
   <body>
     <div class='container'>
-      <div class='display'>
-        120
+      <div class='display BPM_display'>
+        <span class='BPM_led led'>
+        </span>
+        <span class='BPM'>
+          120
+        </span>
+        <span class='BPM_prev prev'>
+        </span>
       </div>
       <div class='button BPM_button'>
         Tap Here

@@ -25,6 +25,22 @@ body{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  position:relative;
+}
+.led {
+  width:.25em;
+  height:.25em;
+  position:absolute;
+  border-radius:.25em;
+  right:15px;
+  top:12px;
+  background:red;
+}
+.prev {
+  position:absolute;
+  font-size:.5em;
+  left:2px;
+  bottom:2px;
 }
 .button {
   font-size:1.5em;
