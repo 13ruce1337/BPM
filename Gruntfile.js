@@ -1,7 +1,8 @@
 module.exports = function(grunt) {
   grunt.initConfig({
+    pkg:grunt.file.readJSON('package.json'),
     execute:{
-      tartget:{
+      target:{
         src:['src/bin/appcompiler.js']
       }
     },
@@ -19,12 +20,23 @@ module.exports = function(grunt) {
         files:['src/libs/*.*'],
         tasks:['execute']
       }
+    },
+    uglify:{
+      options:{
+        banner:'/*! <%= pkg.name %> Build Date: <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+      },
+      build:{
+        src:'src/res/bpm.js',
+        dest:'build/bpm.min.js'
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-execute');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   
+  grunt.registerTask('build',['execute','jshint','uglify']);
   grunt.registerTask('default',['execute','jshint','watch']);
 };
