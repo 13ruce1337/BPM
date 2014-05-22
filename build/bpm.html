@@ -81,50 +81,41 @@ body{
     <!-- bpm js -->
     <script>
       BPM = {
-  bpm:function() {
-    var bpm,sum;
-    sum = 0;
-    for(var i=0;i<BPM.count.length;i++) {
-      if(BPM.count[i] !== null) {
-        sum += BPM.count[i];
-      }
-    }
-    bpm = Math.floor((120/BPM.count.length)*sum,1) || 0;
-    return bpm;
-  },
+  bpm:0,
+  firstsec:0,
+  prevsec:0,
+  count:0,
   timer:undefined,
+  reset:function() {
+    BPM.count = 0;
+    $('.BPM').text(0);
+  },
   init:function() {
-    BPM.tempcount += 1;
-    if(!BPM.timer) {
-      BPM.counter();
-      BPM.listen();
+    var sec,bpm,time;
+    $('.BPM_led').css('background','green');
+    time = new Date();
+    sec = time.getTime();
+    function light() {
+      $('.BPM_prev').text(BPM.bpm);
+      $('.BPM_led').css('background','red');
+      $('.BPM').text(0);
     }
-    $('.BPM').text(BPM.bpm());
-  },
-  state:undefined,
-  counter:function() {
-    function f() {
-      BPM.count.push(BPM.tempcount);
-      BPM.tempcount = 0;
+    clearTimeout(BPM.timer);
+    BPM.timer = setTimeout(light,2000);
+    if((sec - BPM.prevsec) > 1000 * 2) {
+      BPM.count = 0;
     }
-    BPM.timer = setInterval(f,500);
-  },
-  tempcount:0,
-  count:[],
-  listen:function() {
-    var t;
-    clearTimeout(t);
-    t = setTimeout(f,5000);
-    $('.BPM_led').attr('style','background:green;');
-    BPM.state = 1;
-    function f() {
-      clearInterval(BPM.timer);
-      $('.BPM_led').attr('style','background:red;');
-      $('.BPM_prev').text(BPM.bpm());
-      BPM.timer = undefined;
-      BPM.state = undefined;
-      BPM.count = [];
+    if(BPM.count === 0) {
+      $('.BPM').text(0);
+      BPM.firstsec = sec;
+      BPM.count = 1;
+    } else {
+      BPM.bpm = Math.round(60000 * BPM.count / (sec - BPM.firstsec));
+      bpm = Math.round(BPM.bpm * 100) / 100;
+      $('.BPM').text(bpm);
+      BPM.count++;
     }
+    BPM.prevsec = sec;
   }
 };
 
@@ -151,7 +142,7 @@ body{
         <span class='BPM_led led'>
         </span>
         <span class='BPM'>
-          120
+        0
         </span>
         <span class='BPM_prev prev'>
         </span>
